@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+</head> 
+<body onload="iniciarMap()" >
+
+         <nav class="nav" >
+            <ul class="nav nav-tabs">
+               
+               <li class="nav-item">
+                  <a class="nav-link" href="/">Inicio</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/alumnos">Alumnos</a>
+               </li>
+               
+            </ul>
+         </nav>  
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Dias asistidos</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+     {{#each alumnos}}
+    <tr>
+      <td>{{nombre}}</td>
+      <td>{{apellidos}}</td> 
+      <td>{{dias}}</td> 
+      <td>
+         <a href="/delete/{{this.id_alumno}}" type="button" class="btn btn-danger">Eliminar</a>
+         <button class="btn btn-warning" onclick="agregarDias({{this.id_alumno}})">Agregar dias</button>
+         <button class="btn btn-primary" onclick="editarAlumno('{{this.nombre}}','{{this.apellidos}}' , '{{dias}}' ,'{{this.id_alumno}}')">Editar alumno</button>
+      </td>
+    </tr>
+    {{/each}}
+
+    
+  </tbody>
+
+</table>
+
+
+
+      <div style="float: right;">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+               Agregar registros
+            </button> <div style="float: right;">
+            
+      </div>
+<!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><H1>Ingrese los datos del nuevo alumno</H1></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+         <div class="modal-body">
+
+               <form action="/add" method="post">
+                  <div class="mb-3">
+                     
+                     <label for="nombreCompleto" class="form-label">Nombre completo</label>
+                     <input type="text" class="form-control md-5" id="nombre" name="nombre" placeholder="NOMBRE COMPLETO">
+                  </div>
+
+                  <div class="mb-3">
+                  <label for="apellidos" class="form-label">Apellidos</label>
+                  <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="APELLIDOS COMPLETOS">
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                
+            </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+<!-- Modal agrewar dias -->
+   <div class="modal fade" id="agregarDias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+         <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel"><H1>Ingrese los datos del nuevo alumno</H1></h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+
+      <div class="modal-body">
+
+            <form action="/agregar-dias-alumnos" method="post">
+               <div class="mb-3">
+                  <label for="dias" class="form-label">Dias</label>
+                  <input type="text" class="form-control md-5" id="dias" name="dias" placeholder="">
+                  <input type="hidden" name="id_alumno" id="id_alumno">
+               </div>
+         </div>
+         <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Guardar cambios</button>
+               
+         </div>
+         </div>
+         </form>
+      </div>
+   </div>
+<!--  EDITAR ALUMNO Y DIAS -->
+   <div class="modal fade" id="editarAlumnoDias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><H1>Editar alumno</H1></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+         <div class="modal-body">
+
+               <form action="/alumnos/update" method="post">
+                  <input type="hidden" name="id_alumno_editar" id="id_alumno_editar">
+                  <div class="mb-3">
+                     <label for="nombre_new" class="form-label">Nombre completo</label>
+                     <input type="text" class="form-control md-5" id="nombre_new" name="nombre_new" placeholder="NOMBRE COMPLETO">
+                  </div>
+
+                  <div class="mb-3">
+                     <label for="apellidos_new" class="form-label">Apellidos</label>
+                     <input type="text" class="form-control" id="apellidos_new" name="apellidos_new" placeholder="APELLIDOS COMPLETOS">
+                  </div>
+                  <div class="mb-3">
+                     <label for="dias_new" class="form-label">Dias</label>
+                     <input type="text" class="form-control" id="dias_new" name="dias_new" placeholder="APELLIDOS COMPLETOS">
+                  </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                
+            </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+   function agregarDias(id){
+      document.getElementById("id_alumno").value = id;
+      $("#agregarDias").modal("show");
+   }
+   function editarAlumno(nombre,apellidos,dias,id_alumno){
+      document.getElementById("nombre_new").value = nombre;
+      document.getElementById("apellidos_new").value = apellidos;
+      document.getElementById("dias_new").value = dias;
+      document.getElementById("id_alumno_editar").value = id_alumno;
+      $("#editarAlumnoDias").modal("show");
+   }
+</script>
+
+   <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>
